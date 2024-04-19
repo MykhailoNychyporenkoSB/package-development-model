@@ -1,3 +1,7 @@
 trigger AccountTrigger on Account (before insert) {
-    //New Account Trigger. Logic will be added soon.
+    switch on Trigger.operationType{
+        when BEFORE_INSERT{
+            //Call AccountTriggerHelper
+        }
+    }
 }
