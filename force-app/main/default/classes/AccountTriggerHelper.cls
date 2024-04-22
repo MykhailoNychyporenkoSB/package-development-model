@@ -1,5 +1,3 @@
 public with sharing class AccountTriggerHelper {
-    public AccountTriggerHelper() {
-
-    }
+    //code will be added soon
 }
