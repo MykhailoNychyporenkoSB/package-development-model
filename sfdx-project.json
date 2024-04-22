@@ -2,11 +2,19 @@
   "packageDirectories": [
     {
       "path": "force-app",
-      "default": true
+      "default": true,
+      "package": "PDM",
+      "versionName": "ver 1.0",
+      "versionNumber": "1.0.0.NEXT",
+      "versionDescription": "Package Development Model + GitLab CI/CD configuration practice"
     }
   ],
   "name": "ProjectI",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "59.0"
+  "sourceApiVersion": "59.0",
+  "packageAliases": {
+    "PDM": "0HoWU00000008iL0AQ",
+    "PDM@1.0.0-1": "04tWU00000012UPYAY"
+  }
 }
