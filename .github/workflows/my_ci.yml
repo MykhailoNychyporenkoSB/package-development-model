@@ -5,7 +5,7 @@ on:
 
 jobs:
   scratch_org_setup:
-    name: Scratch Org Setup
+    name: Validate New Package Version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,13 +33,13 @@ jobs:
           sf org create scratch --definition-file config/project-scratch-def.json --alias TestScratchOrg --set-default --target-dev-hub DevHub
       - name: Create Scratch Org
         run: |
-          sf project deploy start  --source-dir force-app --target-org TestScratchOrg
+          sf project deploy start --source-dir force-app --target-org TestScratchOrg
       - name: Check code coverage
         run: |
-          sf apex run test --codecoverage --resultformat human --synchronous --testlevel RunLocalTests --wait 10 > tests.json
+          sf apex run test --code-coverage --result-format human --synchronous --test-level RunLocalTests --wait 10 > tests.json
           coverage=$(jq .result.summary.orgWideCoverage tests.json | grep -Eo "[[:digit:]]+")
           test $coverage -ge 75
       - name: Delete scratch org
         if: always()
         run: |
-          'sfdx force:org:delete -p -u ci_scratch'
+          sf org delete scratch --target-org TestScratchOrg
