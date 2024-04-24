@@ -4,12 +4,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  my_first_job:
-    name: My first job
+  scratch_org_setup:
+    name: Scratch Org Setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # if: github.event.action == 'opened' || github.event.action == 'synchronize'
       - uses: actions/setup-node@v4
         with:
           node-version: 'latest'
@@ -19,11 +18,28 @@ jobs:
           npm install @salesforce/cli --global
           sf --version
           sf plugins --core
+      - name: Install jq
+        run: |
+          sudo apt-get install jq
       - name: Authenticate Dev Hub
         run: |
           echo ${{ secrets.SFDX_DEV_HUB_AUTH_URL }} >> sfdx_auth
-          # sfdx force:auth:sfdxurl:store -f sfdx_auth -d -a DevHub
           sf org login sfdx-url --sfdx-url-file sfdx_auth -d -a DevHub
       - name: Display Dev Hub Limits
         run: |
           sf org list limits --target-org DevHub
+      - name: Create Scratch Org
+        run: |
+          sf org create scratch --definition-file config/project-scratch-def.json --alias TestScratchOrg --set-default --target-dev-hub DevHub
+      - name: Create Scratch Org
+        run: |
+          sf project deploy start  --source-dir force-app --target-org TestScratchOrg
+      - name: Check code coverage
+        run: |
+          sf apex run test --codecoverage --resultformat human --synchronous --testlevel RunLocalTests --wait 10 > tests.json
+          coverage=$(jq .result.summary.orgWideCoverage tests.json | grep -Eo "[[:digit:]]+")
+          test $coverage -ge 75
+      - name: Delete scratch org
+        if: always()
+        run: |
+          'sfdx force:org:delete -p -u ci_scratch'
