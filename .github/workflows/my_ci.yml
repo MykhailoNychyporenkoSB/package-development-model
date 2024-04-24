@@ -1,39 +1,40 @@
 name: My CI v1
 
-on: 
-	push:
-    branches:
-      - main
-    workflow_dispatch:
-	# To run CI flow for PRs
-	# pull_request:
-	# branches:
-	# - main
-	# paths: 
-	# - 'force-app/**'
-jobs:
-	build:
-		runs-on: ubuntu-latest
-		steps:
-			steps:
-			- uses: actions/checkout@v4
-			# if: github.event.action == 'opened' || github.event.action == 'synchronize'
-			- uses: actions/setup-node@v4
-			with:
-				node-version: 'latest'
+oon:
+  workflow_dispatch:
+    inputs:
+      name:
+        type: string
+        required: true
+        description: CumulusCI org name (no spaces)
+        default: my-org
+      flow:
+        type: choice
+        description: CumulusCI flow
+        default: dev_org
+        options:
+        - dev_org
+        - install_prod
+      org:
+        type: choice
+        description: CumulusCI org
+        default: dev
+        options:
+        - dev
+        - preview
+      days:
+        type: string
+        description: Days until org expires (1 to 30)
+        default: '1'
+      version:
+        type: string
+        description: Install version (only used for install_prod flow).
+        default: '1'
+      delete_on_failure:
+        type: boolean
+        description: Delete org if action fails or is cancelled.
+        default: true
 
-	- name: Install Salesforce CLI
-		run: |
-			npm install @salesforce/cli --global
-			sf --version
-			sf plugins --core
-			# npm install sfdx-cli
-			# node_modules/sfdx-cli/bin/run --version
-			# node_modules/sfdx-cli/bin/run plugins --core
-
-# - name: Authenticate DevHub
-#       run: |
-#         echo "${SALESFORCE_JWT_SECRET_KEY}" > server.key
 #         node_modules/sfdx-cli/bin/run force:auth:jwt:grant --clientid ${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} --setdefaultdevhubusername -a devhub
 #       env:
 #         SALESFORCE_JWT_SECRET_KEY: ${{ secrets.SALESFORCE_JWT_SECRET_KEY }}
