@@ -1,7 +1,10 @@
 name: My CI v1
 
 on: 
-	workflow_dispatch:
+	push:
+    branches:
+      - main
+    workflow_dispatch:
 	# To run CI flow for PRs
 	# pull_request:
 	# branches:
