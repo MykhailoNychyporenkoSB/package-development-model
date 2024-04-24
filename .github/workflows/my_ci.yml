@@ -1,6 +1,6 @@
 name: My CI v1
 
-oon:
+on:
   workflow_dispatch:
     inputs:
       name:
