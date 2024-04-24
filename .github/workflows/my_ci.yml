@@ -15,7 +15,7 @@ jobs:
       with:
         node-version: 'latest'
 
-    - name: Install Salesforce CLI
+      name: Install Salesforce CLI
       run: |
         npm install @salesforce/cli --global
         sf --version
