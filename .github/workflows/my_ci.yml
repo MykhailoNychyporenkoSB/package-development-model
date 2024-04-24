@@ -2,3 +2,19 @@ name: My CI v1
 
 on:
   workflow_dispatch:
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        steps:
+        - uses: actions/checkout@v4
+        # if: github.event.action == 'opened' || github.event.action == 'synchronize'
+        - uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+
+    - name: Install Salesforce CLI
+      run: |
+        npm install @salesforce/cli --global
+        sf --version
+        sf plugins --core
