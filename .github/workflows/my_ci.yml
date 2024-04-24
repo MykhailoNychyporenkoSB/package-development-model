@@ -4,17 +4,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  runs-on: ubuntu-latest
-  steps:
+  my_first_job:
+    name: My first job
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    # if: github.event.action == 'opened' || github.event.action == 'synchronize'
-    - uses: actions/setup-node@v4
-    with:
-      node-version: 'latest'
+      steps:
+      - uses: actions/checkout@v4
+      # if: github.event.action == 'opened' || github.event.action == 'synchronize'
+      - uses: actions/setup-node@v4
+      with:
+        node-version: 'latest'
 
-  - name: Install Salesforce CLI
-    run: |
-      npm install @salesforce/cli --global
-      sf --version
-      sf plugins --core
+    - name: Install Salesforce CLI
+      run: |
+        npm install @salesforce/cli --global
+        sf --version
+        sf plugins --core
