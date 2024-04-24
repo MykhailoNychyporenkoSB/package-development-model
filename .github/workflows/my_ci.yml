@@ -36,7 +36,7 @@ jobs:
           sf project deploy start --source-dir force-app --target-org TestScratchOrg
       - name: Check code coverage
         run: |
-          sf apex run test --code-coverage --result-format human --synchronous --test-level RunLocalTests --wait 10 > tests.json
+          sf apex run test --code-coverage --detailed-coverage --result-format human > tests.json
           coverage=$(jq .result.summary.orgWideCoverage tests.json | grep -Eo "[[:digit:]]+")
           test $coverage -ge 75
       - name: Delete scratch org
