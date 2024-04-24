@@ -49,10 +49,10 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v2
-      - name: Name Org Alias
-        run: |
-          perl -i -pe 's/lwcgoogleplacesbutton - Dev Org/${{ github.event.inputs.name }}/g;' orgs/dev.json
-          perl -i -pe 's/lwcgoogleplacesbutton - Preview Org/${{ github.event.inputs.name }}/g;' orgs/preview.json
+      # - name: Name Org Alias
+      #   run: |
+      #     perl -i -pe 's/lwcgoogleplacesbutton - Dev Org/${{ github.event.inputs.name }}/g;' orgs/dev.json
+      #     perl -i -pe 's/lwcgoogleplacesbutton - Preview Org/${{ github.event.inputs.name }}/g;' orgs/preview.json
       - name: Install sfdx
         run: |
           mkdir sfdx
