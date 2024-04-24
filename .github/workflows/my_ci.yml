@@ -19,3 +19,11 @@ jobs:
           npm install @salesforce/cli --global
           sf --version
           sf plugins --core
+      - name: Authenticate Dev Hub
+        run: |
+          echo ${{ secrets.SFDX_DEV_HUB_AUTH_URL }} > sfdx_auth
+          # sfdx force:auth:sfdxurl:store -f sfdx_auth -d -a DevHub
+          sf org login sfdx-url --sfdx-url-file sfdx_auth.json -d -a DevHub
+      - name: Display Dev Hub Limits
+        run: |
+          sf org list limits --target-org DevHub
