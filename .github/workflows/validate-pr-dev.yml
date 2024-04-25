@@ -1,4 +1,4 @@
-name: My CI v1
+name: Validate PRs
 
 on:
   workflow_dispatch:
