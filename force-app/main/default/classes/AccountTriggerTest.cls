@@ -30,12 +30,17 @@ public with sharing class AccountTriggerTest {
 
         Assert.areNotEqual(AFTER_UPDATE_DESCRIPTION, acc.Description);
 
-
-
         Test.startTest();
         acc.Name = 'TestAccount BEFORE_UPDATE';
         update acc;
         Test.stopTest();
+
+        acc = [
+            SELECT Id, 
+                Name, 
+                Description 
+            FROM ACCOUNT 
+            LIMIT 1];
 
         Assert.areEqual(AFTER_UPDATE_DESCRIPTION, acc.Description);
     }
