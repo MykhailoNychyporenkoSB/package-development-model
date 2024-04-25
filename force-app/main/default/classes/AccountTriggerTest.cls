@@ -7,36 +7,36 @@ public with sharing class AccountTriggerTest {
         insert new Account(Name = 'TestAccount');
     }
 
-    // @IsTest
-    // static void BEFORE_INSERT_test() {
-    //     Account acc = [
-    //         SELECT Id, 
-    //             Name, 
-    //             Description 
-    //         FROM ACCOUNT 
-    //         LIMIT 1];
+    @IsTest
+    static void BEFORE_INSERT_test() {
+        Account acc = [
+            SELECT Id, 
+                Name, 
+                Description 
+            FROM ACCOUNT 
+            LIMIT 1];
 
-    //     Assert.areEqual(AFTER_INSERT_DESCRIPTION, acc.Description);
-    // }
+        Assert.areEqual(AFTER_INSERT_DESCRIPTION, acc.Description);
+    }
 
-    // @IsTest
-    // static void BEFORE_UPDATE_test() {
-    //     Account acc = [
-    //         SELECT Id, 
-    //             Name, 
-    //             Description 
-    //         FROM ACCOUNT 
-    //         LIMIT 1];
+    @IsTest
+    static void BEFORE_UPDATE_test() {
+        Account acc = [
+            SELECT Id, 
+                Name, 
+                Description 
+            FROM ACCOUNT 
+            LIMIT 1];
 
-    //     Assert.areNotEqual(AFTER_UPDATE_DESCRIPTION, acc.Description);
+        Assert.areNotEqual(AFTER_UPDATE_DESCRIPTION, acc.Description);
 
 
 
-    //     Test.startTest();
-    //     acc.Name = 'TestAccount BEFORE_UPDATE';
-    //     update acc;
-    //     Test.stopTest();
+        Test.startTest();
+        acc.Name = 'TestAccount BEFORE_UPDATE';
+        update acc;
+        Test.stopTest();
 
-    //     Assert.areEqual(AFTER_UPDATE_DESCRIPTION, acc.Description);
-    // }
+        Assert.areEqual(AFTER_UPDATE_DESCRIPTION, acc.Description);
+    }
 }
