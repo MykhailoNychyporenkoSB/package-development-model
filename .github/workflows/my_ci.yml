@@ -46,4 +46,4 @@ jobs:
       - name: Delete scratch org
         if: always()
         run: |
-          sf org delete scratch --target-org TestScratchOrg
+          sf org delete scratch --target-org TestScratchOrg --no-prompt
