@@ -40,9 +40,12 @@ jobs:
       #     sf org login sfdx-url --sfdx-url-file sfdx_auth
       - name: Check code coverage
         run: |
-          sf apex run test --code-coverage --detailed-coverage --result-format human
-          # coverage=$(jq .result.summary.orgWideCoverage tests.json | grep -Eo "[[:digit:]]+")
-          # test $coverage -ge 75
+          # sf apex run test --code-coverage --detailed-coverage --result-format human
+          # # coverage=$(jq .result.summary.orgWideCoverage tests.json | grep -Eo "[[:digit:]]+")
+          # # test $coverage -ge 75
+          sfdx force:apex:test:run --codecoverage --resultformat json --synchronous --testlevel RunLocalTests --wait 10 > tests.json
+          coverage=$(jq .result.summary.orgWideCoverage tests.json | grep -Eo "[[:digit:]]+")
+          test $coverage -ge 75
       - name: Delete scratch org
         if: always()
         run: |
