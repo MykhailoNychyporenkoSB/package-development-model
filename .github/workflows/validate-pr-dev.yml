@@ -5,7 +5,7 @@ on:
   pull_request:
     branches:
       - main
-      - 'v/**'
+      - 'develop/**'
 
 jobs:
   scratch_org_setup:
