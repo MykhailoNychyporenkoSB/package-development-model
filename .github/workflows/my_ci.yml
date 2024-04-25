@@ -41,6 +41,8 @@ jobs:
       - name: Check code coverage
         run: |
           sf apex run test --code-coverage --result-format human --synchronous --test-level RunLocalTests --wait 10 > tests.json
+          coverage=$(jq .result.summary.orgWideCoverage tests.json | grep -Eo "[[:digit:]]+")
+          test $coverage -ge 75
           echo "$(<tests.json)"
       - name: Delete scratch org
         if: always()
