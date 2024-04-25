@@ -1,7 +1,7 @@
 @IsTest
 public with sharing class AccountTriggerTest {
     private static String AFTER_INSERT_DESCRIPTION = 'This field was populated with BEFORE_INSERT trigger action';
-    private static String AFTER_UPDATE_DESCRIPTION = 'This field was populated with BEFORE_INSERT trigger action';
+    private static String AFTER_UPDATE_DESCRIPTION = 'This field was populated with BEFORE_UPDATE trigger action';
     @TestSetup
     static void makeData() {
         insert new Account(Name = 'TestAccount');
