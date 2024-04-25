@@ -1,4 +1,4 @@
-name: Validate PRs
+name: Validate ${{ github.actor }}'s PR
 
 on:
   workflow_dispatch:
