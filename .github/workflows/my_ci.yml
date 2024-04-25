@@ -31,7 +31,7 @@ jobs:
       - name: Create Scratch Org
         run: |
           sf org create scratch --definition-file config/project-scratch-def.json --alias TestScratchOrg --set-default --target-dev-hub DevHub
-      - name: Create Scratch Org
+      - name: Detpoy project to the Scratch Org
         run: |
           sf project deploy start --source-dir force-app --target-org TestScratchOrg
       - name: Scratch Org Auth
