@@ -34,10 +34,10 @@ jobs:
       - name: Detpoy project to the Scratch Org
         run: |
           sf project deploy start --source-dir force-app --target-org TestScratchOrg
-      - name: Scratch Org Auth
-        run: |
-          sf org display --target-org TestScratchOrg --verbose --json >> sfdx_auth
-          sf org login sfdx-url --sfdx-url-file sfdx_auth
+      # - name: Scratch Org Auth
+      #   run: |
+      #     sf org display --target-org TestScratchOrg --verbose --json >> sfdx_auth
+      #     sf org login sfdx-url --sfdx-url-file sfdx_auth
       - name: Check code coverage
         run: |
           sf apex run test --code-coverage --detailed-coverage --result-format human
