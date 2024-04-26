@@ -5,10 +5,11 @@ on:
   pull_request:
     branches:
       - 'develop/**'
+    paths:
+      - force-app/main/default/**
 
 jobs:
-  scratch_org_setup:
-    name: Workflow environment setup
+  validate_pull_request:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
