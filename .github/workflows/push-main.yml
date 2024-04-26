@@ -1,0 +1,44 @@
+name: Publish new release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - main
+    paths:
+      - force-app/main/default/**
+
+jobs:
+  publish_release:
+    name: Setup workflow environment
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 'latest'
+
+    - name: Install Salesforce CLI
+      run: |
+        npm install @salesforce/cli --global
+        sf --version
+        sf plugins --core
+    - name: Install JQ
+      run: |
+        sudo apt-get install jq
+    - name: Authenticate DevHub
+      run: |
+        echo ${{ secrets.SFDX_DEV_HUB_AUTH_URL }} >> sfdx_devhub_auth
+        sf org login sfdx-url --sfdx-url-file sfdx_devhub_auth -d -a DevHub
+    - name: Promote latest version
+      run: |
+        version_id=$(grep -o "04t[[:alnum:]]\{15\}" sfdx-project.json | tail -n1)
+        sf package version promote --package "$version_id" --no-prompt
+    - name: Tag new release
+      run: |
+        tag_name=$(jq ".packageDirectories[0].versionName" sfdx-project.json | tr -d '"'| tr -d ' ')
+        pkg_name=$(jq ".packageDirectories[0].package" sfdx-project.json | tr -d '"')
+        git config user.name "release[bot]"
+        git config user.email "<>"
+        git tag -a "$tag_name" -m "$pkg_name $tag_name"
+        git push origin "$tag_name"
