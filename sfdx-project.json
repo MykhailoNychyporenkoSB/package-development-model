@@ -4,9 +4,9 @@
       "path": "force-app",
       "default": true,
       "package": "PDM + CI template",
-      "versionName": "ver 0.1",
-      "versionNumber": "0.1.0.NEXT",
-      "versionDescription": "Simple template for  package dev model with GitHub CI/CD"
+      "versionName": "ver 1.0",
+      "versionNumber": "1.0.0.NEXT",
+      "versionDescription": "Simple template for package dev model with GitHub CI/CD"
     }
   ],
   "name": "ProjectI",
