@@ -23,6 +23,7 @@ jobs:
           sf --version
           sf plugins --core
       - name: Install JQ
+        run: |
           sudo apt-get install jq
       - name: Authenticate DevHub
         run: |
