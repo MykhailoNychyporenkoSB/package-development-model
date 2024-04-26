@@ -11,7 +11,6 @@ on:
 
 jobs:
   pre_release:
-    name: Setup workflow environment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
