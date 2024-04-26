@@ -8,7 +8,7 @@ on:
 
 jobs:
   scratch_org_setup:
-    name: Validate New Package Version
+    name: Workflow environment setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,10 +21,9 @@ jobs:
           npm install @salesforce/cli --global
           sf --version
           sf plugins --core
-      - name: Install jq
-        run: |
+      - name: Install JQ
           sudo apt-get install jq
-      - name: Authenticate Dev Hub
+      - name: Authenticate DevHub
         run: |
           echo ${{ secrets.SFDX_DEV_HUB_AUTH_URL }} >> sfdx_auth
           sf org login sfdx-url --sfdx-url-file sfdx_auth -d -a DevHub
@@ -34,7 +33,7 @@ jobs:
       - name: Create Scratch Org
         run: |
           sf org create scratch --definition-file config/project-scratch-def.json --alias TestScratchOrg --set-default --target-dev-hub DevHub
-      - name: Detpoy project to the Scratch Org
+      - name: Deploy project to the Scratch Org
         run: |
           sf project deploy start --source-dir force-app --target-org TestScratchOrg
       - name: Scratch Org Auth
@@ -47,7 +46,7 @@ jobs:
           echo "$(<tests.json)"
           coverage=$(jq .result.summary.orgWideCoverage tests.json | grep -Eo "[[:digit:]]+")
           test $coverage -ge 75
-      - name: Delete scratch org
+      - name: Delete Scratch Org
         if: always()
         run: |
           sf org delete scratch --target-org TestScratchOrg --no-prompt
