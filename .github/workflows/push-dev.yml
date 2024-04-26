@@ -5,10 +5,12 @@ on:
   push:
     branches: 
       - 'develop/**'
+    paths:
+      - force-app/main/default/**
 
 
 jobs:
-  scratch_org_setup:
+  pre_release:
     name: Setup workflow environment
     runs-on: ubuntu-latest
     steps:
