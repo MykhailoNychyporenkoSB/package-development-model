@@ -1,0 +1,57 @@
+name: Create pre-release version
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - 'develop/**'
+
+
+jobs:
+  scratch_org_setup:
+    name: Setup workflow environment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+     
+      - name: Install Salesforce CLI
+        run: |
+          npm install @salesforce/cli --global
+          sf --version
+          sf plugins --core
+      - name: Install JQ
+        run: |
+          sudo apt-get install jq
+      - name: Authenticate DevHub
+        run: |
+          echo ${{ secrets.SFDX_DEV_HUB_AUTH_URL }} >> sfdx_devhub_auth
+          sf org login sfdx-url --sfdx-url-file sfdx_devhub_auth -d -a DevHub
+      - name: Create new package version
+        run: |
+          sf package version create --installation-key-bypass --package "PDM + CI template" --wait 60 --code-coverage
+          new_version_id=$(grep -o "04t[[:alnum:]]\{15\}" sfdx-project.json | tail -n1)
+          echo "version_id=${new_version_id}" >> $GITHUB_ENV
+      - name: Check code coverage
+        run: |
+          # test $(sfdx force:package:version:report -p "$version_id" --json | jq .result.HasPassedCodeCoverageCheck) = 'true'
+          test $(sf package version report --package "$version_id" --json | jq .result.HasPassedCodeCoverageCheck) = 'true'
+      - name: Authenticate Staging
+        run: |
+          echo ${{ secrets.SFDX_STAGING_AUTH_URL }} >> sfdx_stagign_auth
+          sf org login sfdx-url --sfdx-url-file sfdx_stagign_auth -d -a Staging
+      - name: Install new version in Sandbox
+        run: |
+          # sfdx force:package:install -p "$version_id" -u Staging --wait 10 --publishwait 10
+          sf package install --package "$version_id" --target-org Staging --wait 10 --publish-wait 10
+      - name: Store new version id
+        run: |
+          sed -i -e "s/04t[[:alnum:]]\{15\}/${version_id}/" README.md
+          git config user.name "release[bot]"
+          git config user.email "<>"
+          git add README.md
+          git add sfdx-project.json
+          git commit -m "Updating new pre-release version"
+          git push
